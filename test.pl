@@ -1,6 +1,6 @@
 #!/usr/bin/perl
 
-### $Header: /home/manuel/bknr-cvs/cvs/thirdparty/cl-interpol/test.pl,v 1.1 2004/06/23 08:27:10 hans Exp $
+### $Header: /usr/local/cvsrep/cl-interpol/test.pl,v 1.4 2003/10/19 15:55:25 edi Exp $
 
 ### Copyright (c) 2002-2003, Dr. Edmund Weitz. All rights reserved.
 
@@ -49,7 +49,7 @@ sub quote {
 
 print <<'HEAD';
 ;;; -*- Mode: LISP; Syntax: COMMON-LISP; Package: CL-INTERPOL; Base: 10 -*-
-;;; $Header: /home/manuel/bknr-cvs/cvs/thirdparty/cl-interpol/test.pl,v 1.1 2004/06/23 08:27:10 hans Exp $
+;;; $Header: /usr/local/cvsrep/cl-interpol/test.pl,v 1.4 2003/10/19 15:55:25 edi Exp $
 
 ;;; Copyright (c) 2002-2003, Dr. Edmund Weitz. All rights reserved.
 

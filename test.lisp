@@ -1,5 +1,5 @@
 ;;; -*- Mode: LISP; Syntax: COMMON-LISP; Package: CL-INTERPOL; Base: 10 -*-
-;;; $Header: /home/manuel/bknr-cvs/cvs/thirdparty/cl-interpol/test.lisp,v 1.1 2004/06/23 08:27:10 hans Exp $
+;;; $Header: /usr/local/cvsrep/cl-interpol/test.lisp,v 1.9 2004/04/24 00:19:13 edi Exp $
 
 ;;; Copyright (c) 2002-2003, Dr. Edmund Weitz. All rights reserved.
 
@@ -28,6 +28,10 @@
 ;;; SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
 (in-package #:cl-interpol)
+
+;; Otherwise it's impossible to see which tests are failing for all
+;; the "helpful" warnings.
+#+sbcl (declaim (optimize (sb-ext:inhibit-warnings 3)))
 
 (defvar *temp*)
 
@@ -153,6 +157,14 @@
   (test #?"The result is ${(let ((y 2)) (+ x y))}"
         "The result is 42")
   (test #?"${#?'${a} ${c}'} ${x}" "foo bar 40"))
+
+(setq cl-interpol:*optional-delimiters-p* t)
+(test (let ((% 23)) #?"$%a%b%") "23a%b%")
+(test (let ((%a 23)) #?"$%a%b%") "23%b%")
+(test (let ((%a% 23)) #?"$%a%b%") "23b%")
+(test (let ((%a%b 23)) #?"$%a%b%") "23%")
+(test (let ((%a%b% 23)) #?"$%a%b%") "23")
+(setq cl-interpol:*optional-delimiters-p* nil)
 
 (load (merge-pathnames "test2.lisp"
                        *cl-interpol-base-directory*))

@@ -1,5 +1,5 @@
 ;;; -*- Mode: LISP; Syntax: COMMON-LISP; Package: CL-INTERPOL; Base: 10 -*-
-;;; $Header: /home/manuel/bknr-cvs/cvs/thirdparty/cl-interpol/specials.lisp,v 1.1 2004/06/23 08:27:10 hans Exp $
+;;; $Header: /usr/local/cvsrep/cl-interpol/specials.lisp,v 1.7 2004/04/24 00:19:13 edi Exp $
 
 ;;; Copyright (c) 2003, Dr. Edmund Weitz. All rights reserved.
 
@@ -63,6 +63,11 @@ interpolated by #\@.")
   "The Unicode scripts which are to be tried if a name couldn't be
 resolved otherwise.")
 
+(defvar *optional-delimiters-p* nil
+  "Whether text following $ or @ should interpolate even without a
+following delimiter.  Lexical variables are handled correctly,
+but the rules are somewhat complex -- see the docs for details.")
+
 (defmacro defvar-unbound (variable-name documentation)
   "Like DEFVAR, but the variable will be unbound rather than getting
 an initial value.  This is useful for variables which should have no
@@ -97,3 +102,22 @@ here by ENABLE-INTERPOL-SYNTAX.")
 (defvar-unbound *readtable-copy*
   "Bound to the current readtable if it has to be temporarily
 modified.")
+
+;; stuff for Nikodemus Siivola's HYPERDOC
+;; see <http://common-lisp.net/project/hyperdoc/>
+;; and <http://www.cliki.net/hyperdoc>
+
+(defvar *hyperdoc-base-uri* "http://weitz.de/cl-interpol/")
+
+(let ((exported-symbols-alist
+       (loop for symbol being the external-symbols of :cl-interpol
+             collect (cons symbol
+                           (concatenate 'string
+                                        "#"
+                                        (string-downcase symbol))))))
+  (defun hyperdoc-lookup (symbol type)
+    (declare (ignore type))
+    (cdr (assoc symbol
+                exported-symbols-alist
+                :test #'eq))))
+               

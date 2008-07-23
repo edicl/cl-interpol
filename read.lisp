@@ -1,5 +1,5 @@
 ;;; -*- Mode: LISP; Syntax: COMMON-LISP; Package: CL-INTERPOL; Base: 10 -*-
-;;; $Header: /home/manuel/bknr-cvs/cvs/thirdparty/cl-interpol/read.lisp,v 1.1 2004/06/23 08:27:10 hans Exp $
+;;; $Header: /usr/local/cvsrep/cl-interpol/read.lisp,v 1.25 2004/04/24 00:19:13 edi Exp $
 
 ;;; Copyright (c) 2003, Dr. Edmund Weitz. All rights reserved.
 
@@ -202,6 +202,63 @@ backslash has already been consumed."
               (concatenate 'string "\\" (string result)))
             (t result)))))
 
+(declaim (inline normal-name-char-p)
+	 (inline never-name-char-p))
+
+(defun normal-name-char-p (c)
+  (and c (or (alphanumericp c)
+	     (member c '(#\_ #\- #\+ #\*)))))
+
+(defun never-name-char-p (c)
+  (or (not c)
+      (get-macro-character c)
+      (member c '(#\$ #\@))))
+
+(defvar quell-warnings-form
+  #+sbcl '(declare (optimize (sb-ext:inhibit-warnings 3)))
+  #-sbcl nil
+  "A declaration form to quiet warnings about unbound variables
+  within a lexical environment.")
+
+(defun read-longest-name ()
+  (coerce
+   (loop until (never-name-char-p (peek-char nil *stream* nil nil t))
+      collect (read-char*))
+   'string))
+
+(defun read-optional-delimited ()
+  "Read the stuff following an optional delimiter, returning a form
+that tries to deal correctly with lexical variables."
+  (flet ((try-pos (name i form)
+	   (let ((ostr (gensym)))
+	     `(handler-case
+		  (with-output-to-string (,ostr)
+		    (princ ,(read-from-string (subseq name 0 i)) ,ostr)
+		    (princ ,(subseq name i) ,ostr)
+		    ,ostr)
+		(unbound-variable () ,form)))))
+	   
+  (loop
+     with name = (read-longest-name)
+     with form = `(error ,(format nil "Interpolation error in ~s~%" name))
+     with ostr = (gensym)
+     for i = (position-if-not #'normal-name-char-p name)
+     then (position-if-not #'normal-name-char-p name :start (1+ i))
+
+     unless i
+     return `(let () ,quell-warnings-form
+		  (handler-case
+		      (with-output-to-string (,ostr)
+			(princ ,(read-from-string name) ,ostr)
+			,ostr)
+		    (unbound-variable () ,form)))
+
+     if (> i 0)
+     do (setq form (try-pos name i form))
+
+     if  (< i (length name))
+     do (setq form (try-pos name (1+ i) form)))))
+
 (declaim (inline read-form))
 (defun read-form ()
   "Reads and returns one or more Lisp forms from *STREAM* if the
@@ -210,7 +267,9 @@ returns NIL."
   (let* ((start-delimiter (peek-char*))
          (end-delimiter (get-end-delimiter start-delimiter *inner-delimiters*)))
     (cond ((null end-delimiter)
-            nil)
+            (if *optional-delimiters-p*
+		(read-optional-delimited)
+		nil))
           (t
             `(progn
               ,@(progn

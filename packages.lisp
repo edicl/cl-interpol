@@ -1,5 +1,5 @@
 ;;; -*- Mode: LISP; Syntax: COMMON-LISP; Package: CL-USER; Base: 10 -*-
-;;; $Header: /home/manuel/bknr-cvs/cvs/thirdparty/cl-interpol/packages.lisp,v 1.1 2004/06/23 08:27:10 hans Exp $
+;;; $Header: /usr/local/cvsrep/cl-interpol/packages.lisp,v 1.4 2004/04/24 00:19:13 edi Exp $
 
 ;;; Copyright (c) 2003, Dr. Edmund Weitz. All rights reserved.
 
@@ -41,7 +41,8 @@
            #:*short-unicode-names-p*
            #:*unicode-scripts*
            #:*outer-delimiters*
-           #:*inner-delimiters*))
+           #:*inner-delimiters*
+	   #:*optional-delimiters-p*))
 
 #+:cormanlisp
 (defpackage "CL-INTERPOL"
@@ -56,3 +57,5 @@
            "*UNICODE-SCRIPTS*"
            "*OUTER-DELIMITERS*"
            "*INNER-DELIMITERS*"))
+
+(pushnew :cl-interpol *features*)

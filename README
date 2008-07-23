@@ -1,6 +1,10 @@
 Complete documentation for CL-INTERPOL can be found in the 'doc'
 directory.
 
+CL-INTERPOL also supports Nikodemus Siivola's HYPERDOC, see
+<http://common-lisp.net/project/hyperdoc/> and
+<http://www.cliki.net/hyperdoc>.
+
 1. Installation
 
 1.1. Probably the easiest way is

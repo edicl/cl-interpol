@@ -1,5 +1,5 @@
 ;;; -*- Mode: LISP; Syntax: COMMON-LISP; Package: CL-USER; Base: 10 -*-
-;;; $Header: /home/manuel/bknr-cvs/cvs/thirdparty/cl-interpol/load.lisp,v 1.1 2004/06/23 08:27:10 hans Exp $
+;;; $Header: /usr/local/cvsrep/cl-interpol/load.lisp,v 1.1 2003/10/19 15:56:51 edi Exp $
 
 ;;; Copyright (c) 2002-2003, Dr. Edmund Weitz.  All rights reserved.
 
