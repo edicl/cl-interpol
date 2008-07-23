@@ -1,7 +1,7 @@
 ;;; -*- Mode: LISP; Syntax: COMMON-LISP; Package: CL-USER; Base: 10 -*-
-;;; $Header: /usr/local/cvsrep/cl-interpol/cl-interpol.asd,v 1.1 2003/10/16 23:05:04 edi Exp $
+;;; $Header: /usr/local/cvsrep/cl-interpol/cl-interpol.asd,v 1.10 2008/07/23 16:10:05 edi Exp $
 
-;;; Copyright (c) 2003, Dr. Edmund Weitz.  All rights reserved.
+;;; Copyright (c) 2003-2008, Dr. Edmund Weitz.  All rights reserved.
 
 ;;; Redistribution and use in source and binary forms, with or without
 ;;; modification, are permitted provided that the following conditions
@@ -27,17 +27,30 @@
 ;;; NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
 ;;; SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
-(in-package #:cl-user)
+(in-package :cl-user)
 
-(defpackage #:cl-interpol.system
-  (:use #:cl
-        #:asdf))
+(defpackage :cl-interpol-asd
+  (:use :cl :asdf))
 
-(in-package #:cl-interpol.system)
+(in-package :cl-interpol-asd)
 
-(defsystem #:cl-interpol
-    :components ((:file "packages")
-                 (:file "specials" :depends-on ("packages"))
-                 (:file "util" :depends-on ("specials"))
-                 (:file "unicode" :depends-on ("specials"))
-                 (:file "read" :depends-on ("util" "unicode"))))
+(defsystem :cl-interpol
+  :version "0.2.0"
+  :serial t
+  :depends-on (:cl-unicode)
+  :components ((:file "packages")
+               (:file "specials")
+               (:file "util")
+               (:file "alias")
+               (:file "read")))
+
+(defsystem :cl-interpol-test
+  :depends-on (:cl-interpol :flexi-streams)
+  :components ((:module "test"
+                        :serial t
+                        :components ((:file "packages")
+                                     (:file "tests")))))
+
+(defmethod perform ((o test-op) (c (eql (find-system :cl-interpol))))
+  (operate 'load-op :cl-interpol-test)
+  (funcall (intern (symbol-name :run-all-tests) (find-package :cl-interpol-test))))

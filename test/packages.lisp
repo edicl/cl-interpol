@@ -1,7 +1,7 @@
 ;;; -*- Mode: LISP; Syntax: COMMON-LISP; Package: CL-USER; Base: 10 -*-
-;;; $Header: /usr/local/cvsrep/cl-interpol/cl-interpol.system,v 1.1 2003/10/16 23:03:54 edi Exp $
+;;; $Header: /usr/local/cvsrep/cl-interpol/test/packages.lisp,v 1.2 2008/07/23 13:58:44 edi Exp $
 
-;;; Copyright (c) 2003, Dr. Edmund Weitz.  All rights reserved.
+;;; Copyright (c) 2002-2008, Dr. Edmund Weitz. All rights reserved.
 
 ;;; Redistribution and use in source and binary forms, with or without
 ;;; modification, are permitted provided that the following conditions
@@ -27,17 +27,8 @@
 ;;; NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
 ;;; SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
-(in-package #:cl-user)
+(in-package :cl-user)
 
-(defparameter *cl-interpol-base-directory*
-  (make-pathname :name nil :type nil :version nil
-                 :defaults (parse-namestring *load-truename*)))
-
-(mk:defsystem #:cl-interpol
-    :source-pathname *cl-interpol-base-directory*
-    :source-extension "lisp"
-    :components ((:file "packages")
-                 (:file "specials" :depends-on ("packages"))
-                 (:file "util" :depends-on ("specials"))
-                 (:file "unicode" :depends-on ("specials"))
-                 (:file "read" :depends-on ("unicode" "util"))))
+(defpackage :cl-interpol-test
+  (:use :cl :cl-interpol :cl-unicode)
+  (:export :run-all-tests))

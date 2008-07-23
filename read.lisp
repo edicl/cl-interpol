@@ -1,7 +1,7 @@
 ;;; -*- Mode: LISP; Syntax: COMMON-LISP; Package: CL-INTERPOL; Base: 10 -*-
-;;; $Header: /usr/local/cvsrep/cl-interpol/read.lisp,v 1.25 2004/04/24 00:19:13 edi Exp $
+;;; $Header: /usr/local/cvsrep/cl-interpol/read.lisp,v 1.31 2008/07/23 15:13:08 edi Exp $
 
-;;; Copyright (c) 2003, Dr. Edmund Weitz. All rights reserved.
+;;; Copyright (c) 2003-2008, Dr. Edmund Weitz. All rights reserved.
 
 ;;; Redistribution and use in source and binary forms, with or without
 ;;; modification, are permitted provided that the following conditions
@@ -27,7 +27,7 @@
 ;;; NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
 ;;; SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
-(in-package #:cl-interpol)
+(in-package :cl-interpol)
 
 (defun read-while (predicate &key max)
   "Reads characters from *STREAM* while PREDICATE returns a true value
@@ -58,47 +58,12 @@ next MAX characters."
 
 (defun resolve-unicode-name (name)
   "Tries to return a character which was encoded as \\N<NAME>."
-  (or (and *long-unicode-names-p*
-           ;; first try long name
-           (gethash name *unicode-names*))
-      (and *short-unicode-names-p*
-           ;; now short name including script (separated by a colon)
-           (let ((colon-pos (position #\: name :test #'char=)))
-             (and colon-pos
-                  (let* ((script
-                           (string-trim " " (nsubvec name 0 colon-pos)))
-                         (short-name
-                           (string-trim " " (nsubvec name (1+ colon-pos))))
-                         ;; size depends on how SHORT-NAME has been
-                         ;; written
-                         (size (if (every #'lower-case-p* short-name)
-                                 "small" "capital")))
-                    (or (gethash (concatenate 'string
-                                              script " "
-                                              size " letter "
-                                              short-name)
-                                 *unicode-names*)
-                        (gethash (concatenate 'string
-                                              script " letter "
-                                              short-name)
-                                 *unicode-names*))))))
-      ;; finally try all scripts which are in *UNICODE-SCRIPTS*
-      (let ((size (if (every #'lower-case-p* name)
-                    "small" "capital")))
-        (loop for script in *unicode-scripts*
-              thereis (or (gethash (concatenate 'string
-                                                script " "
-                                                size " letter "
-                                                name)
-                                   *unicode-names*)
-                          (gethash (concatenate 'string
-                                                script " letter "
-                                                name)
-                                   *unicode-names*))))))
+  (or (character-named name)
+      (gethash (canonicalize-name name) *unicode-aliases*)))
 
 (defun get-char-from-unicode-name ()
   "Parses and returns a named character after \"\\N\" has already been
-read. This function reads from *STREAM*."
+read.  This function reads from *STREAM*."
   (let ((next-char (read-char*)))
     (unless (char= next-char #\{)
       (signal-reader-error "Expected { after \\N"))
@@ -119,9 +84,9 @@ backslash has already been consumed."
   (let ((chr (read-char*)))
     ;; certain escape sequences are left as is when in regex mode
     (when (or (and (eq regex-mode :in-char-class)
-                   (find chr "wWsSdD" :test #'char=))
+                   (find chr "pPwWsSdD" :test #'char=))
               (and (eq regex-mode t)
-                   (find chr "wWsSdDbBAZz" :test #'char=)))
+                   (find chr "kpPwWsSdDbBAZz" :test #'char=)))
       (return-from unescape-char
         (concatenate 'string "\\" (string chr))))
     (let ((result

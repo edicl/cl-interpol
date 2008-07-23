@@ -1,7 +1,7 @@
 ;;; -*- Mode: LISP; Syntax: COMMON-LISP; Package: CL-INTERPOL; Base: 10 -*-
-;;; $Header: /usr/local/cvsrep/cl-interpol/util.lisp,v 1.7 2003/10/22 09:20:30 edi Exp $
+;;; $Header: /usr/local/cvsrep/cl-interpol/util.lisp,v 1.12 2008/07/23 14:41:37 edi Exp $
 
-;;; Copyright (c) 2003, Dr. Edmund Weitz. All rights reserved.
+;;; Copyright (c) 2003-2008, Dr. Edmund Weitz. All rights reserved.
 
 ;;; Redistribution and use in source and binary forms, with or without
 ;;; modification, are permitted provided that the following conditions
@@ -27,7 +27,7 @@
 ;;; NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
 ;;; SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
-(in-package #:cl-interpol)
+(in-package :cl-interpol)
 
 (define-condition simple-reader-error (simple-condition reader-error)
   ()
@@ -43,8 +43,8 @@
 
 (defun string-list-to-string (string-list)
   "Concatenates a list of strings to one string."
-  ;; this function originally provided by JP Massar for CL-PPCRE; note
-  ;; that we can't use APPLY with CONCATENATE here because of
+  ;; this function was originally provided by JP Massar for CL-PPCRE;
+  ;; note that we can't use APPLY with CONCATENATE here because of
   ;; CALL-ARGUMENTS-LIMIT
   (let ((total-size 0))
     (dolist (string string-list)
@@ -55,19 +55,6 @@
         (replace result-string string :start1 curr-pos)
         (incf curr-pos (length string)))
       result-string)))
-
-(defun quote-meta-chars (string)
-  "Quote, i.e. prefix with #\\\\, all non-word characters in STRING."
-  (with-output-to-string (s)
-    (loop for char across string
-          if (or (char<= #\a char #\z)
-                 (char<= #\A char #\Z)
-                 (char<= #\0 char #\9)
-                 (char= #\_ char)) do
-          (write-char char s)
-          else do
-          (write-char #\\ s)
-          (write-char char s))))
 
 (defun get-end-delimiter (start-delimiter delimiters &key errorp)
   "Find the closing delimiter corresponding to the opening delimiter

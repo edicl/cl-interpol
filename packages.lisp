@@ -1,7 +1,7 @@
 ;;; -*- Mode: LISP; Syntax: COMMON-LISP; Package: CL-USER; Base: 10 -*-
-;;; $Header: /usr/local/cvsrep/cl-interpol/packages.lisp,v 1.4 2004/04/24 00:19:13 edi Exp $
+;;; $Header: /usr/local/cvsrep/cl-interpol/packages.lisp,v 1.11 2008/07/23 15:35:07 edi Exp $
 
-;;; Copyright (c) 2003, Dr. Edmund Weitz. All rights reserved.
+;;; Copyright (c) 2003-2008, Dr. Edmund Weitz. All rights reserved.
 
 ;;; Redistribution and use in source and binary forms, with or without
 ;;; modification, are permitted provided that the following conditions
@@ -27,35 +27,14 @@
 ;;; NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
 ;;; SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
-(in-package #:cl-user)
+(in-package :cl-user)
 
-#-:cormanlisp
-(defpackage #:cl-interpol
-  (:nicknames #:interpol)
-  (:use #:cl)
-  (:export #:enable-interpol-syntax
-           #:disable-interpol-syntax
-           #:quote-meta-chars
-           #:*list-delimiter*
-           #:*long-unicode-names-p*
-           #:*short-unicode-names-p*
-           #:*unicode-scripts*
-           #:*outer-delimiters*
-           #:*inner-delimiters*
-	   #:*optional-delimiters-p*))
-
-#+:cormanlisp
-(defpackage "CL-INTERPOL"
-  (:nicknames "INTERPOL")
-  (:use "CL")
-  (:export "ENABLE-INTERPOL-SYNTAX"
-           "DISABLE-INTERPOL-SYNTAX"
-           "QUOTE-META-CHARS"
-           "*LIST-DELIMITER*"
-           "*LONG-UNICODE-NAMES-P*"
-           "*SHORT-UNICODE-NAMES-P*"
-           "*UNICODE-SCRIPTS*"
-           "*OUTER-DELIMITERS*"
-           "*INNER-DELIMITERS*"))
-
-(pushnew :cl-interpol *features*)
+(defpackage :cl-interpol
+  (:nicknames :interpol)
+  (:use :cl :cl-unicode :cl-ppcre)
+  (:export :enable-interpol-syntax
+           :disable-interpol-syntax
+           :*list-delimiter*
+           :*outer-delimiters*
+           :*inner-delimiters*
+	   :*optional-delimiters-p*))
