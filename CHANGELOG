@@ -1,5 +1,5 @@
 Version 0.2.0
-2008-07-23
+2008-07-24
 Base Unicode support on CL-UNICODE
 Add new CL-PPCRE special characters for named registers and named properties	
 Re-architecture test suite	
