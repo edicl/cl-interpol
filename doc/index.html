@@ -86,7 +86,7 @@ license</a> so you can basically do with it whatever you want.
 
 CL-INTERPOL together with this documentation can be downloaded from <a
 href="http://weitz.de/files/cl-interpol.tar.gz">http://weitz.de/files/cl-interpol.tar.gz</a>. The
-current version is 0.2.0.
+current version is 0.2.1.
 <p>
 CL-INTERPOL comes with a system definition for <a
 href="http://www.cliki.net/asdf">ASDF</a> so you can install the library with
@@ -492,7 +492,7 @@ However, if a string read by CL-INTERPOL does not contain interpolations, it is 
 Beyond what has been explained above CL-INTERPOL can support Perl regular expression syntax. This feature is mainly intended for use with <a href="http://weitz.de/cl-ppcre/">CL-PPCRE</a> (version 0.7.0 or higher). The <em>regular expression mode</em> is switched on if the <a href="#outer">opening outer delimiter</a> is a <code class=yellow>/</code> (slash) - but see <a href="#*regex-delimiters*"><code>*REGEX-DELIMITERS*</code></a>. It is also on if there's an <code class=yellow>r</code> (lowercase or uppercase) in front of the opening outer delimiter. If there's also an <code class=yellow>x</code> (lowercase or uppercase) in front of the opening outer delimiter (but <em>behind</em> the <code class=yellow>r</code> if it's there), the string will be read in <em>extended mode</em> (see <code>man&nbsp;perlre</code> for a detailed explanation). In these modes the following things are different from what's described above:
 <ul>
 
-  <li><code class=yellow>\k</code>, <code class=yellow>\p</code>, <code class=yellow>\P</code>, <code class=yellow>\w</code>, <code class=yellow>\W</code>, <code class=yellow>\s</code>,
+  <li><code class=yellow>\p</code>, <code class=yellow>\P</code>, <code class=yellow>\w</code>, <code class=yellow>\W</code>, <code class=yellow>\s</code>,
   <code class=yellow>\S</code>, <code class=yellow>\d</code>, and <code class=yellow>\D</code> are never
   converted to their unescaped (backslash-less) counterparts because
   they have or can have a special meaning in regular expressions.
@@ -713,7 +713,7 @@ convenient. Buy <a href="http://www.apress.com/book/bookDisplay.html?bID=237">hi
 book</a>!!!
 
 <p>
-$Header: /usr/local/cvsrep/cl-interpol/doc/index.html,v 1.38 2008/07/23 16:10:09 edi Exp $
+$Header: /usr/local/cvsrep/cl-interpol/doc/index.html,v 1.39 2008/07/25 12:52:00 edi Exp $
 <p><a href="http://weitz.de/index.html">BACK TO MY HOMEPAGE</a>
 
 </body>

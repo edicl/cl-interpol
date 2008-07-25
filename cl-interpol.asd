@@ -1,5 +1,5 @@
 ;;; -*- Mode: LISP; Syntax: COMMON-LISP; Package: CL-USER; Base: 10 -*-
-;;; $Header: /usr/local/cvsrep/cl-interpol/cl-interpol.asd,v 1.10 2008/07/23 16:10:05 edi Exp $
+;;; $Header: /usr/local/cvsrep/cl-interpol/cl-interpol.asd,v 1.11 2008/07/25 12:51:58 edi Exp $
 
 ;;; Copyright (c) 2003-2008, Dr. Edmund Weitz.  All rights reserved.
 
@@ -35,7 +35,7 @@
 (in-package :cl-interpol-asd)
 
 (defsystem :cl-interpol
-  :version "0.2.0"
+  :version "0.2.1"
   :serial t
   :depends-on (:cl-unicode)
   :components ((:file "packages")
