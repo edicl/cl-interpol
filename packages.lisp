@@ -37,4 +37,5 @@
            :*list-delimiter*
            :*outer-delimiters*
            :*inner-delimiters*
-	   :*optional-delimiters-p*))
+	   :*optional-delimiters-p*
+           :*interpolate-format-directives*))
