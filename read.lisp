@@ -275,10 +275,17 @@ returns NIL."
                    (progn
                      (vector-push-extend (read-char*) format-directive)
                      t)
+                   nil))
+             (read-v ()
+               (if (char-equal #\v (peek-char*))
+                   (progn
+                     (vector-push-extend (read-char*) format-directive)
+                     t)
                    nil)))
       (loop
         while (or (read-quoted-char)
                   (read-integer)
+                  (read-v)
                   (read-comma))
         finally (read-modifier)
         finally (vector-push-extend (read-char*) format-directive))
