@@ -142,3 +142,15 @@
 (string= (let ((%a% 23)) #?"$%a%b%") "23b%")
 (string= (let ((%a%b 23)) #?"$%a%b%") "23%")
 (string= (let ((%a%b% 23)) #?"$%a%b%") "23")
+
+(setq *interpolate-format-directives* nil)
+
+(string= (let ((a "abc")) (declare (ignorable a)) #?"~S(a)") "~S(a)")
+
+(setq *interpolate-format-directives* t)
+
+(string= (let ((a "abc")) #?"~S(a)") "\"abc\"")
+(string= (let ((a "abc")) #?"~a(a)") "abc")
+(string= (let ((number 41)) #?"~8,'0B((incf number) number)") "00101010")
+(string= (let ((a "abc")) #?" \~~a(a)") " ~abc")
+(string= #?" ~v~(4) " " ~~~~ ")

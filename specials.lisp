@@ -58,6 +58,9 @@ interpolated by #\@.")
 following delimiter.  Lexical variables are handled correctly,
 but the rules are somewhat complex -- see the docs for details.")
 
+(defvar *interpolate-format-directives* nil
+  "Whether to allow ~X(...) as format control directives in interpolated strings.")
+
 (defmacro defvar-unbound (variable-name documentation)
   "Like DEFVAR, but the variable will be unbound rather than getting
 an initial value.  This is useful for variables which should have no
