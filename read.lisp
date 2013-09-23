@@ -244,6 +244,46 @@ returns NIL."
                    (set-syntax-from-char end-delimiter #\))
                    (read-delimited-list end-delimiter *stream* t))))))))
 
+(defun read-format-directive ()
+  "Reads and returns a format directive (as a string) along with one
+  or more lisp forms (as per read-form)."
+  (let ((format-directive (make-collector)))
+    (labels ((read-quoted-char ()
+               (if (char= #\' (peek-char*))
+                   (progn
+                    (vector-push-extend (read-char*) format-directive)
+                    (vector-push-extend (read-char*) format-directive)
+                    t)
+                   nil))
+             (read-integer ()
+               (if (member (peek-char*) '(#\- #\0 #\1 #\2 #\3 #\4 #\5 #\6 #\7 #\8 #\9))
+                   (progn
+                     (vector-push-extend (read-char*) format-directive)
+                     (loop while (member (peek-char*) '(#\- #\0 #\1 #\2 #\3 #\4 #\5 #\6 #\7 #\8 #\9))
+                           do (vector-push-extend (read-char*) format-directive))
+                     t)
+                   nil))
+             (read-modifier ()
+               (loop repeat 2
+                     with found = nil
+                     when (member (peek-char*) '(#\@ #\:))
+                       do (vector-push-extend (read-char*) format-directive)
+                       and do (setf found t)
+                     finally (return found)))
+             (read-comma ()
+               (if (char= #\, (peek-char*))
+                   (progn
+                     (vector-push-extend (read-char*) format-directive)
+                     t)
+                   nil)))
+      (loop
+        while (or (read-quoted-char)
+                  (read-integer)
+                  (read-comma))
+        finally (read-modifier)
+        finally (vector-push-extend (read-char*) format-directive))
+      format-directive)))
+
 (defun interpol-reader (*stream* char arg)
   "The actual reader function for the 'sub-character' #\?."
   (declare (ignore arg char))
@@ -540,6 +580,13 @@ call itself recursively."
                                     ;; otherwise this is a
                                     ;; backslash-escaped character
                                     (unescape-char regex-mode))))
+                              ((#\~)
+                               ;; #\~ - might be an inline format directive
+                               (if *interpolate-format-directives*
+                                   `(format ,string-stream
+                                            ,(concatenate 'string "~" (read-format-directive))
+                                            ,(read-form) )
+                                   #\~))
                               ((#\$)
                                 ;; #\$ - might be an interpolation
                                 (let ((form (read-form)))
