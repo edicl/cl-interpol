@@ -734,12 +734,13 @@ call itself recursively."
                 else
                 collect interpolation)))))
 
-(defun %enable-interpol-syntax ()
+(defun %enable-interpol-syntax (&key (modify-*readtable* nil))
   "Internal function used to enable reader syntax and store current
 readtable on stack."
-  (push *readtable*
-        *previous-readtables*)
-  (setq *readtable* (copy-readtable))
+  (unless modify-*readtable*
+    (push *readtable*
+          *previous-readtables*)
+    (setq *readtable* (copy-readtable)))
   (set-dispatch-macro-character #\# #\? #'interpol-reader)
   (values))
 
@@ -750,10 +751,10 @@ readtable on stack."
     (setq *readtable* (copy-readtable nil)))
   (values))
 
-(defmacro enable-interpol-syntax ()
+(defmacro enable-interpol-syntax (&rest %enable-interpol-syntax-args)
   "Enable CL-INTERPOL reader syntax."
   `(eval-when (:compile-toplevel :load-toplevel :execute)
-    (%enable-interpol-syntax)))
+    (%enable-interpol-syntax ,@%enable-interpol-syntax-args)))
 
 (defmacro disable-interpol-syntax ()
   "Restore readtable which was active before last call to
