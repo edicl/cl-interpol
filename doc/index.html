@@ -73,6 +73,7 @@ license</a> so you can basically do with it whatever you want.
     <li><a href="#*list-delimiter*"><code>*list-delimiter*</code></a>
     <li><a href="#*outer-delimiters*"><code>*outer-delimiters*</code></a>
     <li><a href="#*inner-delimiters*"><code>*inner-delimiters*</code></a>
+    <li><a href="#*interpolate-format-directives*"><code>*interpolate-format-directives*</code></a>
     <li><a href="#*regex-delimiters*"><code>*regex-delimiters*</code></a>
   </ol>
   <li><a href="#bugs">Known issues</a>
@@ -601,20 +602,29 @@ NIL
 CL-INTERPOL exports the following symbols:
 
 <p><br>[Macro]
-<br><a class=none name="enable-interpol-syntax"><b>enable-interpol-syntax</b>  =&gt; |</a>
+<br><a class=none name="enable-interpol-syntax"><b>enable-interpol-syntax</b>  <i><tt>&amp;key</tt> modify-*readtable*</i>=&gt; |</a>
 
-<blockquote><br>
+<blockquote>
 
-This is used to enable the reader syntax described <a href="#syntax">above</a>. This macro
+<p>This is used to enable the reader syntax described <a href="#syntax">above</a>. This macro
 expands into an <a
 href="http://www.lispworks.com/documentation/HyperSpec/Body/s_eval_w.htm"><code>EVAL-WHEN</code></a>
 so that if you use it as a <a
 href="http://www.lispworks.com/documentation/HyperSpec/Body/26_glo_t.htm#top_level_form">top-level
 form</a> in a file to be loaded and/or compiled it'll do what you
-expect. Technically this'll push the <a
+expect.</p>
+
+<p>If the parameter <code>modify-*readtable*</code> is NIL (the
+default) this will push the <a
 href="http://www.lispworks.com/documentation/HyperSpec/Body/26_glo_c.htm#current_readtable">current
-readtable</a> on a stack so that matching calls of <code>ENABLE-INTERPOL-SYNTAX</code> and <a href="#disable-interpol-syntax"><code>DISABLE-INTERPOL-SYNTAX</code></a> can nest.
-Note that by default the reader syntax is <em>not</em> enabled after loading CL-INTERPOL.
+readtable</a> on a stack so that matching calls of
+<code>ENABLE-INTERPOL-SYNTAX</code> and <a
+href="#disable-interpol-syntax"><code>DISABLE-INTERPOL-SYNTAX</code></a>
+can nest. Otherwise the current value of <code>*readtable*</code> will
+be modified.</p>
+
+<p>Note: by default the reader syntax is <em>not</em>
+enabled after loading CL-INTERPOL.</p>
 
 </blockquote>
 
@@ -671,6 +681,33 @@ href="http://www.lispworks.com/documentation/HyperSpec/Body/s_eval_w.htm"><code>
   (#\{ . #\})
   (#\&lt; . #\&gt)
   (#\[ . #\]))
+</pre>
+
+</blockquote>
+
+<p><br>[Special variable]
+<br><a class=none name="*interpolate-format-directives*"><b>*interpolate-format-directives*</b></a>
+
+<blockquote><br>
+
+This is a boolean value which determines if the ~ character signals
+the start of an inline format directive. When T sequences with this
+form:
+
+<pre>
+~paramsX(form)
+</pre>
+
+Will be passed to <code>cl:format</code>, with <code>FORM</code> as
+the one and only argument and <code>params</code> and <code>X</code>
+are the format directive (with the same syntax as in
+<code>cl:format</code>).
+
+Examples:
+
+<pre>
+* (let ((x 42)) #?&quot;An integer: ~D(x) ~X(x) ~8,'0B(x)&quot;)
+&quot;An integer: 42 2A 00101010&quot;
 </pre>
 
 </blockquote>
