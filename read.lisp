@@ -585,7 +585,10 @@ call itself recursively."
                                (if *interpolate-format-directives*
                                    `(format ,string-stream
                                             ,(concatenate 'string "~" (read-format-directive))
-                                            ,(read-form) )
+                                            ,@(let ((form (read-form)))
+                                                (if form
+                                                    (list form)
+                                                    '())))
                                    #\~))
                               ((#\$)
                                 ;; #\$ - might be an interpolation
