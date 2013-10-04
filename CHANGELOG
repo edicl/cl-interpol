@@ -1,3 +1,7 @@
+Version 0.2.2
+2013-10-04
+inline format directive syntax and an extra argument to enable-interpol-syntax (Marco Baringer)
+
 Version 0.2.1
 2008-07-25
 Fixed typo in HTML documentation
@@ -5,9 +9,9 @@ Fixed typo in HTML documentation
 Version 0.2.0
 2008-07-24
 Base Unicode support on CL-UNICODE
-Add new CL-PPCRE special characters for named registers and named properties	
-Re-architecture test suite	
-	
+Add new CL-PPCRE special characters for named registers and named properties
+Re-architecture test suite
+
 Version 0.1.2
 2004-12-16
 Added hyperdoc support
