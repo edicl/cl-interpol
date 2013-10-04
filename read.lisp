@@ -244,6 +244,53 @@ returns NIL."
                    (set-syntax-from-char end-delimiter #\))
                    (read-delimited-list end-delimiter *stream* t))))))))
 
+(defun read-format-directive ()
+  "Reads and returns a format directive (as a string) along with one
+  or more lisp forms (as per read-form)."
+  (let ((format-directive (make-collector)))
+    (labels ((read-quoted-char ()
+               (if (char= #\' (peek-char*))
+                   (progn
+                    (vector-push-extend (read-char*) format-directive)
+                    (vector-push-extend (read-char*) format-directive)
+                    t)
+                   nil))
+             (read-integer ()
+               (if (member (peek-char*) '(#\- #\0 #\1 #\2 #\3 #\4 #\5 #\6 #\7 #\8 #\9))
+                   (progn
+                     (vector-push-extend (read-char*) format-directive)
+                     (loop while (member (peek-char*) '(#\- #\0 #\1 #\2 #\3 #\4 #\5 #\6 #\7 #\8 #\9))
+                           do (vector-push-extend (read-char*) format-directive))
+                     t)
+                   nil))
+             (read-modifier ()
+               (loop repeat 2
+                     with found = nil
+                     when (member (peek-char*) '(#\@ #\:))
+                       do (vector-push-extend (read-char*) format-directive)
+                       and do (setf found t)
+                     finally (return found)))
+             (read-comma ()
+               (if (char= #\, (peek-char*))
+                   (progn
+                     (vector-push-extend (read-char*) format-directive)
+                     t)
+                   nil))
+             (read-v ()
+               (if (char-equal #\v (peek-char*))
+                   (progn
+                     (vector-push-extend (read-char*) format-directive)
+                     t)
+                   nil)))
+      (loop
+        while (or (read-quoted-char)
+                  (read-integer)
+                  (read-v)
+                  (read-comma))
+        finally (read-modifier)
+        finally (vector-push-extend (read-char*) format-directive))
+      format-directive)))
+
 (defun interpol-reader (*stream* char arg)
   "The actual reader function for the 'sub-character' #\?."
   (declare (ignore arg char))
@@ -540,6 +587,16 @@ call itself recursively."
                                     ;; otherwise this is a
                                     ;; backslash-escaped character
                                     (unescape-char regex-mode))))
+                              ((#\~)
+                               ;; #\~ - might be an inline format directive
+                               (if *interpolate-format-directives*
+                                   `(format ,string-stream
+                                            ,(concatenate 'string "~" (read-format-directive))
+                                            ,@(let ((form (read-form)))
+                                                (if form
+                                                    (list form)
+                                                    '())))
+                                   #\~))
                               ((#\$)
                                 ;; #\$ - might be an interpolation
                                 (let ((form (read-form)))
@@ -687,12 +744,13 @@ call itself recursively."
                 else
                 collect interpolation)))))
 
-(defun %enable-interpol-syntax ()
+(defun %enable-interpol-syntax (&key (modify-*readtable* nil))
   "Internal function used to enable reader syntax and store current
 readtable on stack."
-  (push *readtable*
-        *previous-readtables*)
-  (setq *readtable* (copy-readtable))
+  (unless modify-*readtable*
+    (push *readtable*
+          *previous-readtables*)
+    (setq *readtable* (copy-readtable)))
   (set-dispatch-macro-character #\# #\? #'interpol-reader)
   (values))
 
@@ -703,10 +761,10 @@ readtable on stack."
     (setq *readtable* (copy-readtable nil)))
   (values))
 
-(defmacro enable-interpol-syntax ()
+(defmacro enable-interpol-syntax (&rest %enable-interpol-syntax-args)
   "Enable CL-INTERPOL reader syntax."
   `(eval-when (:compile-toplevel :load-toplevel :execute)
-    (%enable-interpol-syntax)))
+    (%enable-interpol-syntax ,@%enable-interpol-syntax-args)))
 
 (defmacro disable-interpol-syntax ()
   "Restore readtable which was active before last call to
