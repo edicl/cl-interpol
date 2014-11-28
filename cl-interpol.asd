@@ -35,7 +35,7 @@
 (in-package :cl-interpol-asd)
 
 (defsystem :cl-interpol
-  :version "0.2.2"
+  :version "0.2.3"
   :serial t
   :depends-on (:cl-unicode)
   :components ((:file "packages")

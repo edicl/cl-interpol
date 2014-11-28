@@ -1,3 +1,7 @@
+Version 0.2.3
+2014-11-28
+update support info (Hans Huebner)
+
 Version 0.2.2
 2013-10-04
 inline format directive syntax and an extra argument to enable-interpol-syntax (Marco Baringer)
