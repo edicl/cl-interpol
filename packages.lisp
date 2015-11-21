@@ -38,4 +38,5 @@
            :*outer-delimiters*
            :*inner-delimiters*
 	   :*optional-delimiters-p*
-           :*interpolate-format-directives*))
+           :*interpolate-format-directives*
+	   :interpol-reader))
