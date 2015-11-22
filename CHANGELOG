@@ -1,3 +1,7 @@
+Version 0.2.4
+2015-11-22
+Exnabled direct use of cl-interpol-reader (Mike Maul)
+
 Version 0.2.3
 2014-11-28
 update support info (Hans Huebner)
