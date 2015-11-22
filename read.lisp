@@ -294,7 +294,7 @@ returns NIL."
 (defun interpol-reader (*stream* char arg &key (recursive-p t))
   "The actual reader function for the 'sub-character' #\?.
 
-This function can be used directly outside of a read table by setting `recursive-p` to true.
+This function can be used directly outside of a read table by passing `recursive-p` as NIL.
 
 "
   (declare (ignore arg char))
