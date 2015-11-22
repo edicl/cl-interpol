@@ -292,7 +292,11 @@ returns NIL."
       format-directive)))
 
 (defun interpol-reader (*stream* char arg &key (recursive-p t))
-  "The actual reader function for the 'sub-character' #\?."
+  "The actual reader function for the 'sub-character' #\?.
+
+This function can be used directly outside of a read table by setting `recursive-p` to true.
+
+"
   (declare (ignore arg char))
   (let ((*start-char* (read-char*))
         ;; REGEX-MODE is true if we're in regular expression mode; it
