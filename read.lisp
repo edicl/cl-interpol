@@ -225,7 +225,7 @@ that tries to deal correctly with lexical variables."
      do (setq form (try-pos name (1+ i) form)))))
 
 (declaim (inline read-form))
-(defun read-form ()
+(defun read-form (&key (recursive-p t))
   "Reads and returns one or more Lisp forms from *STREAM* if the
 character we're looking at is a valid inner delimiter. Otherwise
 returns NIL."
@@ -242,7 +242,7 @@ returns NIL."
                  (let ((*readtable* (copy-readtable*)))
                    ;; temporarily change the readtable
                    (set-syntax-from-char end-delimiter #\))
-                   (read-delimited-list end-delimiter *stream* t))))))))
+                   (read-delimited-list end-delimiter *stream* recursive-p))))))))
 
 (defun read-format-directive ()
   "Reads and returns a format directive (as a string) along with one
@@ -291,8 +291,12 @@ returns NIL."
         finally (vector-push-extend (read-char*) format-directive))
       format-directive)))
 
-(defun interpol-reader (*stream* char arg)
-  "The actual reader function for the 'sub-character' #\?."
+(defun interpol-reader (*stream* char arg &key (recursive-p t))
+  "The actual reader function for the 'sub-character' #\?.
+
+This function can be used directly outside of a read table by setting `recursive-p` to true.
+
+"
   (declare (ignore arg char))
   (let ((*start-char* (read-char*))
         ;; REGEX-MODE is true if we're in regular expression mode; it
@@ -327,11 +331,11 @@ returns NIL."
           *saw-backslash*
           *readtable-copy*)
       (prog1
-        (inner-reader regex-mode extended-mode nil nil)
+        (inner-reader regex-mode extended-mode nil nil :recursive-p recursive-p)
         ;; consume the closing outer delimiter
         (read-char*)))))
 
-(defun inner-reader (regex-mode extended-mode quote-mode case-mode)
+(defun inner-reader (regex-mode extended-mode quote-mode case-mode &key (recursive-p t))
   "Helper function for INTERPOL-READER which does all the work. May
 call itself recursively."
   ;; REGEX-MODE and EXTENDED-MODE as described above; QUOTE-MODE is
@@ -592,14 +596,14 @@ call itself recursively."
                                (if *interpolate-format-directives*
                                    `(format ,string-stream
                                             ,(concatenate 'string "~" (read-format-directive))
-                                            ,@(let ((form (read-form)))
+                                            ,@(let ((form (read-form :recursive-p recursive-p)))
                                                 (if form
                                                     (list form)
                                                     '())))
                                    #\~))
                               ((#\$)
                                 ;; #\$ - might be an interpolation
-                                (let ((form (read-form)))
+                                (let ((form (read-form :recursive-p recursive-p)))
                                   (cond ((null form)
                                           ;; no, just dollar sign
                                           #\$)
@@ -627,7 +631,7 @@ call itself recursively."
                                           `(princ ,form ,string-stream)))))
                               ((#\@)
                                 ;; #\Q - might be an interpolation
-                                (let ((form (read-form))
+                                (let ((form (read-form :recursive-p recursive-p))
                                       (element (gensym))
                                       (first (gensym)))
                                   (cond ((null form)
