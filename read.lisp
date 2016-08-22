@@ -137,6 +137,9 @@ backslash has already been consumed."
                         ;; now \x should be followed by an octal char
                         ;; code, three digits or less
                         (make-char-from-code (get-number :radix 8 :max 3)))))
+              ((#\Newline)
+                (peek-char t *stream* nil)
+                "")
               ;; the following five character names are
               ;; 'semi-standard' according to the CLHS but I'm not
               ;; aware of any implementation that doesn't implement
