@@ -78,6 +78,10 @@
 
 (char= (char #?"\N{Newline}" 0) #\Newline)
 
+;; ignored newline
+(string= #?"abc\
+   def" "abcdef")
+
 (string= #?/\1/ "\\1")
 (string= #?r"\1" "\\1")
 (string= #?r"\k<foo>" "\\k<foo>")

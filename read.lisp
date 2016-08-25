@@ -138,7 +138,10 @@ backslash has already been consumed."
                         ;; code, three digits or less
                         (make-char-from-code (get-number :radix 8 :max 3)))))
               ((#\Newline)
-                (peek-char t *stream* nil)
+                (read-while
+                  (lambda (c)
+                    (or (char= c #\Space)
+                        (not (or (graphic-char-p c) (char= c #\Newline))))))
                 "")
               ;; the following five character names are
               ;; 'semi-standard' according to the CLHS but I'm not
