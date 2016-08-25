@@ -217,11 +217,10 @@ to these special characters is modeled after Perl because CL-INTERPOL
 is intended to be usable with <a
 href="http://weitz.de/cl-ppcre/">CL-PPCRE</a>.
 
-<h4><a name="backslash" class=none>Backslashes</a></h4>
-Here's a short summary of what might occur after a backslash, copied
-verbatim from <code>man&nbsp;perlop</code>. Details below - you can
-click on the entries in this table to go to the corresponding
-paragraph.
+<h4><a name="backslash" class=none>Backslashes</a></h4> Here's a short
+summary of what might occur after a backslash, originally copied
+from <code>man&nbsp;perlop</code>. Details below - you can
+click on the entries in this table to go to the corresponding paragraph.
 
 <pre class=none>
   <a class=none href="#tab">\t          tab             (HT, TAB)
@@ -243,6 +242,8 @@ paragraph.
   \U          uppercase till \E
   \E          end case modification</a>
   <a class=none href="#quote">\Q          quote non-word characters till \E</a>
+
+  <a class=none href="#ignl">\<span style="border:1px solid #a0a0a0">&#x2424;</span>          ignore the newline and following whitespaces</a>
 </pre>
 <p>
 <a class=none name="tab">If</a> a backslash is followed by
@@ -417,6 +418,29 @@ As you might have noticed, <code class=yellow>\E</code> is used to end the scope
 </pre>
 
 Quoting characters with <code class=yellow>\Q</code> is especially helpful if you want to <a href="#interpolation">interpolate</a> a string verbatim into a <a href="#regular">regular expression</a>.
+
+<p>
+  <a class=none name="ignl">If</a> a backslash is placed at the end of a line, it works as the <a href="http://www.lispworks.com/documentation/HyperSpec/Body/22_cic.htm">tilde newline</a> directive to Common Lisp's <code>FORMAT</code> function. That is, the newline immediately following the backslash and any non-newline whitespace characters after the newline are ignored. This escape sequence allows to break long string literals into several lines of code, so as to maintain convenient line width and indentation of code.
+<pre>
+* #?&quot;@@ -1,11 +1,12 @@\n Th\n-e\n+at\n  quick b\n\
+     @@ -22,18 +22,17 @@\n jump\n-s\n+ed\n  over \n\
+     -the\n+a\n  laz\n&quot;
+&quot;@@ -1,11 +1,12 @@
+ Th
+-e
++at
+  quick b
+@@ -22,18 +22,17 @@
+ jump
+-s
++ed
+  over 
+-the
++a
+  laz
+&quot;
+</pre>
+
 <p>
 All other characters following a backslash are left as is and inserted into the string. This is also true for the backslash itself, for <code class=yellow>$</code>, <code class=yellow>@</code>, and - as mentioned above - for the <a href="#outer">outer closing delimiter</a>.
 <pre>
