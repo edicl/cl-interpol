@@ -38,6 +38,7 @@
   :version "0.2.6"
   :serial t
   :depends-on (:cl-unicode)
+  :license "BSD-2-Clause"
   :components ((:file "packages")
                (:file "specials")
                (:file "util")
