@@ -9,10 +9,10 @@ into literal strings even if your editor/IDE doesn't support them.
 Here's an example:
 
 ~~~lisp
-* (let ((a 42))
-    #?&quot;foo: \xC4\N{Latin capital letter U with diaeresis}\nbar: ${a}&quot;)
-&quot;foo: &Auml;&Uuml;
-bar: 42&quot;
+(let ((a 42))
+    #?"foo: \xC4\N{Latin capital letter U with diaeresis}\nbar: ${a}")
+"foo: ÄÜ
+bar: 42"
 ~~~
 
 CL-INTERPOL comes with a [BSD-style
