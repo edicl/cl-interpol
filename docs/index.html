@@ -1,5 +1,4 @@
-<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
-<html> 
+<html>
 
 <head>
   <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
@@ -9,19 +8,20 @@
   h3, h4 { text-decoration: underline; }
   a { text-decoration: none; padding: 1px 2px 1px 2px; }
   a:visited { text-decoration: none; padding: 1px 2px 1px 2px; }
-  a:hover { text-decoration: none; padding: 1px 1px 1px 1px; border: 1px solid #000000; } 
+  a:hover { text-decoration: none; padding: 1px 1px 1px 1px; border: 1px solid #000000; }
   a:focus { text-decoration: none; padding: 1px 2px 1px 2px; border: none; }
   a.none { text-decoration: none; padding: 0; }
-  a.none:visited { text-decoration: none; padding: 0; } 
-  a.none:hover { text-decoration: none; border: none; padding: 0; } 
-  a.none:focus { text-decoration: none; border: none; padding: 0; } 
-  a.noborder { text-decoration: none; padding: 0; } 
-  a.noborder:visited { text-decoration: none; padding: 0; } 
-  a.noborder:hover { text-decoration: none; border: none; padding: 0; } 
-  a.noborder:focus { text-decoration: none; border: none; padding: 0; }  
+  a.none:visited { text-decoration: none; padding: 0; }
+  a.none:hover { text-decoration: none; border: none; padding: 0; }
+  a.none:focus { text-decoration: none; border: none; padding: 0; }
+  a.noborder { text-decoration: none; padding: 0; }
+  a.noborder:visited { text-decoration: none; padding: 0; }
+  a.noborder:hover { text-decoration: none; border: none; padding: 0; }
+  a.noborder:focus { text-decoration: none; border: none; padding: 0; }
   pre.none { padding:5px; background-color:#ffffff }
   code.yellow { background-color:#ffff00; }
   </style>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 </head>
 
 <body bgcolor=white>
@@ -46,14 +46,14 @@ Here's an example:
 bar: 42&quot;
 </pre>
 If you're looking for an alternative syntax for <em>characters</em>, see
-<a href="http://weitz.de/cl-unicode/#syntax">CL-UNICODE</a>.
+<a href="https://github.com/edicl/cl-unicode/">CL-UNICODE</a>.
 <p>
 CL-INTERPOL comes with a <a
 href="http://www.opensource.org/licenses/bsd-license.php">BSD-style
 license</a> so you can basically do with it whatever you want.
 
 <p>
-<font color=red>Download shortcut:</font> <a href="http://weitz.de/files/cl-interpol.tar.gz">http://weitz.de/files/cl-interpol.tar.gz</a>.
+<font color=red><a href="https://github.com/edicl/cl-interpol/archive/master.zip">Download current version</a></font> or visit the <a href="https://github.com/edicl/cl-interpol/">project on Github</a>.
 </blockquote>
 
 <br>&nbsp;<br><h3><a class=none name="contents">Contents</a></h3>
@@ -86,7 +86,7 @@ license</a> so you can basically do with it whatever you want.
 <br>&nbsp;<br><h3><a name="install" class=none>Download and installation</a></h3>
 
 CL-INTERPOL together with this documentation can be downloaded from <a
-href="http://weitz.de/files/cl-interpol.tar.gz">http://weitz.de/files/cl-interpol.tar.gz</a>. The
+href="https://github.com/edicl/cl-interpol/archive/master.zip">Github</a>. The
 current version is 0.2.2.
 <p>
 CL-INTERPOL comes with a system definition for <a
@@ -94,7 +94,7 @@ href="http://www.cliki.net/asdf">ASDF</a> so you can install the library with
 <pre>
 (asdf:oos 'asdf:load-op :cl-interpol)
 </pre>
-if you've unpacked it in a place where ASDF can find it.  It depends on <a href="http://weitz.de/cl-unicode/">CL-UNICODE</a>.  Installation
+if you've unpacked it in a place where ASDF can find it.  It depends on <a href="https://github.com/edicl/cl-unicode/">CL-UNICODE</a>.  Installation
 via <a href="http://www.cliki.net/asdf-install">asdf-install</a>
 should also be possible.
 <p>
@@ -106,7 +106,7 @@ You can run a test suite which tests most aspects of the library with
 <pre>
 (asdf:oos 'asdf:test-op :cl-interpol)
 </pre>
-The test suite depends on <a href="http://weitz.de/flexi-streams/">FLEXI-STREAMS</a>.
+The test suite depends on <a href="https://github.com/edicl/flexi-streams/">FLEXI-STREAMS</a>.
 <p>
 The current development version of CL-INTERPOL can be found
 at <a href="http://bknr.net/trac/browser/trunk/thirdparty">http://bknr.net/trac/browser/trunk/thirdparty</a>.
@@ -123,8 +123,7 @@ href="http://common-lisp.net/~loliveira/ediware/">http://common-lisp.net/~lolive
 The development version of cl-interpol can be found <a href="https://github.com/edicl/cl-interpol" target="_new">on
 github</a>.  Please use the github issue tracking system to
 submit bug reports.  Patches are welcome, please use <a href="https://github.com/edicl/cl-interpol/pulls">GitHub pull
-requests</a>.  If you want to make a change, please <a href="http://weitz.de/patches.html" target="_new">read this
-first</a>.
+requests</a>.
 
 <br>&nbsp;<br><h3><a name="syntax" class=none>Syntax</a></h3>
 
@@ -215,7 +214,7 @@ characters <a href="#backslash"><code class=yellow>\</code> (backslash)</a>, <co
 or <code class=yellow>@</code> (at-sign) is encountered. The behaviour with respect
 to these special characters is modeled after Perl because CL-INTERPOL
 is intended to be usable with <a
-href="http://weitz.de/cl-ppcre/">CL-PPCRE</a>.
+href="https://github.com/edicl/cl-ppcre/">CL-PPCRE</a>.
 
 <h4><a name="backslash" class=none>Backslashes</a></h4> Here's a short
 summary of what might occur after a backslash, originally copied
@@ -300,7 +299,7 @@ will be read which'll be interpreted as the character code
 0
 * (char-code (char #?&quot;\x{}&quot; 0))
 0
-* (<a href="http://weitz.de/cl-unicode/#unicode-name" class=none>unicode-name</a> (char #?&quot;\x{2323}&quot; 0))
+* (<a href="https://github.com/edicl/cl-unicode/" class=none>unicode-name</a> (char #?&quot;\x{2323}&quot; 0))
 &quot;SMILE&quot;
 * #?&quot;Only\x202 digits!&quot;
 &quot;Only 2 digits!&quot;
@@ -334,27 +333,27 @@ following the bracket are read until a <code class=yellow>}</code>
 (right curly bracket) is seen and comprise the Unicode <em>name</em>
 of the character to be inserted into the string. This name is
 interpreted as a Unicode character name
-by <a href="http://weitz.de/cl-unicode/">CL-UNICODE</a> and returns
+by <a href="https://github.com/edicl/cl-unicode/">CL-UNICODE</a> and returns
 the
-character <a href="http://weitz.de/cl-unicode/#character-named"><code>CHARACTER-NAMED</code></a>.
+character <code>CHARACTER-NAMED</code>.
 This obviously also means that you can fine-tune this behaviour using
 CL-UNICODE's global special variables.
 <pre>
-* (<a href="http://weitz.de/cl-unicode/#unicode-name" class=none>unicode-name</a> (char #?"\N{Greek capital letter Sigma}" 0))
+* (unicode-name (char #?"\N{Greek capital letter Sigma}" 0))
 "GREEK CAPITAL LETTER SIGMA"
-* (<a href="http://weitz.de/cl-unicode/#unicode-name" class=none>unicode-name</a> (char #?"\N{GREEK CAPITAL LETTER SIGMA}" 0))
+* (unicode-name (char #?"\N{GREEK CAPITAL LETTER SIGMA}" 0))
 "GREEK CAPITAL LETTER SIGMA"
-* (setq <a href="http://weitz.de/cl-unicode/#*try-abbreviations-p*" class=none>*try-abbreviations-p*</a> t)
+* (setq *try-abbreviations-p* t)
 T
-* (<a href="http://weitz.de/cl-unicode/#unicode-name" class=none>unicode-name</a> (char #?"\N{Greek:Sigma}" 0))
+* (unicode-name (char #?"\N{Greek:Sigma}" 0))
 "GREEK CAPITAL LETTER SIGMA"
-* (<a href="http://weitz.de/cl-unicode/#unicode-name" class=none>unicode-name</a> (char #?"\N{Greek:sigma}" 0))
+* (unicode-name (char #?"\N{Greek:sigma}" 0))
 "GREEK SMALL LETTER SIGMA"
-* (setq <a href="http://weitz.de/cl-unicode/#*scripts-to-try*" class=none>*scripts-to-try*</a> "Greek")
+* (setq *scripts-to-try* "Greek")
 "Greek"
-* (<a href="http://weitz.de/cl-unicode/#unicode-name" class=none>unicode-name</a> (char #?"\N{Sigma}" 0))
+* (unicode-name (char #?"\N{Sigma}" 0))
 "GREEK CAPITAL LETTER SIGMA"
-* (<a href="http://weitz.de/cl-unicode/#unicode-name" class=none>unicode-name</a> (char #?"\N{sigma}" 0))
+* (unicode-name (char #?"\N{sigma}" 0))
 "GREEK SMALL LETTER SIGMA"
 </pre>
 
@@ -434,7 +433,7 @@ Quoting characters with <code class=yellow>\Q</code> is especially helpful if yo
  jump
 -s
 +ed
-  over 
+  over
 -the
 +a
   laz
@@ -495,7 +494,7 @@ like this:
 
 <pre>
 (with-output-to-string (#:G1098)
-  (write-string (<a href="http://weitz.de/cl-ppcre/#quote-meta-chars">cl-ppcre:quote-meta-chars</a>
+  (write-string (cl-ppcre:quote-meta-chars
                  (with-output-to-string (#:G1099)
                    (write-string &quot;-&quot; #:G1099)
                    (let ((#:G1100
@@ -514,7 +513,7 @@ However, if a string read by CL-INTERPOL does not contain interpolations, it is 
 
 <br>&nbsp;<br><h3><a name="regular" class=none>Support for CL-PPCRE/Perl regular expressions</a></h3>
 
-Beyond what has been explained above CL-INTERPOL can support Perl regular expression syntax. This feature is mainly intended for use with <a href="http://weitz.de/cl-ppcre/">CL-PPCRE</a> (version 0.7.0 or higher). The <em>regular expression mode</em> is switched on if the <a href="#outer">opening outer delimiter</a> is a <code class=yellow>/</code> (slash) - but see <a href="#*regex-delimiters*"><code>*REGEX-DELIMITERS*</code></a>. It is also on if there's an <code class=yellow>r</code> (lowercase or uppercase) in front of the opening outer delimiter. If there's also an <code class=yellow>x</code> (lowercase or uppercase) in front of the opening outer delimiter (but <em>behind</em> the <code class=yellow>r</code> if it's there), the string will be read in <em>extended mode</em> (see <code>man&nbsp;perlre</code> for a detailed explanation). In these modes the following things are different from what's described above:
+Beyond what has been explained above CL-INTERPOL can support Perl regular expression syntax. This feature is mainly intended for use with <a href="https://github.com/edicl/cl-ppcre/">CL-PPCRE</a> (version 0.7.0 or higher). The <em>regular expression mode</em> is switched on if the <a href="#outer">opening outer delimiter</a> is a <code class=yellow>/</code> (slash) - but see <a href="#*regex-delimiters*"><code>*REGEX-DELIMITERS*</code></a>. It is also on if there's an <code class=yellow>r</code> (lowercase or uppercase) in front of the opening outer delimiter. If there's also an <code class=yellow>x</code> (lowercase or uppercase) in front of the opening outer delimiter (but <em>behind</em> the <code class=yellow>r</code> if it's there), the string will be read in <em>extended mode</em> (see <code>man&nbsp;perlre</code> for a detailed explanation). In these modes the following things are different from what's described above:
 <ul>
 
   <li><code class=yellow>\p</code>, <code class=yellow>\P</code>, <code class=yellow>\w</code>, <code class=yellow>\W</code>, <code class=yellow>\s</code>,
@@ -590,10 +589,9 @@ Beyond what has been explained above CL-INTERPOL can support Perl regular expres
 
 If all this seems complicated, just keep in mind that this mode is
 meant so that you can feed strings to <a
-href="http://weitz.de/cl-ppcre/">CL-PPCRE</a> exactly as if you had
-written them for Perl (without <a
-href="http://weitz.de/cl-ppcre/#backslash">counting Lisp backslashes
-versus Perl backslashes</a>). However, you should <em>not</em> use
+href="https://github.com/edicl/cl-ppcre/">CL-PPCRE</a> exactly as if you had
+written them for Perl (without counting Lisp backslashes
+versus Perl backslashes). However, you should <em>not</em> use
 both CL-INTERPOL's as well as CL-PPCRE's extended mode at once because
 this might lead to errors. (CL-PPCRE's will, e.g., throw away
 whitespace which had been escaped in CL-INTERPOL.)
@@ -746,7 +744,7 @@ href="http://www.lispworks.com/documentation/HyperSpec/Body/s_eval_w.htm"><code>
 
 <h4><a name="curly" class=none><code>{n,m}</code> modifiers in extended mode</a></h4>
 
-CL-INTERPOL treats 'potential' <code>{n,m}</code> modifiers differently from <a href="http://weitz.de/cl-ppcre/">CL-PPCRE</a> or Perl in <a href="#regular">extended mode</a> <em>if</em> they contain whitespace. CL-INTERPOL will simply remove the whitespace and thus make them valid modifiers for CL-PPCRE while Perl will remove the whitespace but <em>not</em> recognize the character sequence as a modifier. CL-PPCRE behaves like Perl - you decide if this behaviour is sane...:)
+CL-INTERPOL treats 'potential' <code>{n,m}</code> modifiers differently from <a href="https://github.com/edicl/cl-ppcre/">CL-PPCRE</a> or Perl in <a href="#regular">extended mode</a> <em>if</em> they contain whitespace. CL-INTERPOL will simply remove the whitespace and thus make them valid modifiers for CL-PPCRE while Perl will remove the whitespace but <em>not</em> recognize the character sequence as a modifier. CL-PPCRE behaves like Perl - you decide if this behaviour is sane...:)
 <pre>
 * (let ((scanner (cl-ppcre:create-scanner &quot;^a{3, 3}$&quot; :extended-mode t)))
     (cl-ppcre:scan scanner &quot;aaa&quot;))
@@ -769,13 +767,13 @@ NIL
 <br>&nbsp;<br><h3><a class=none name="ack">Acknowledgements</a></h3>
 
 Thanks to Peter Seibel who had the idea to do this to
-make <a href="http://weitz.de/cl-ppcre/">CL-PPCRE</a> more
+make <a href="https://github.com/edicl/cl-ppcre/">CL-PPCRE</a> more
 convenient. Buy <a href="http://www.apress.com/book/bookDisplay.html?bID=237">his
 book</a>!!!
 
 <p>
 $Header: /usr/local/cvsrep/cl-interpol/doc/index.html,v 1.39 2008/07/25 12:52:00 edi Exp $
-<p><a href="http://weitz.de/index.html">BACK TO MY HOMEPAGE</a>
+<p><a href="https://edicl.github.io">BACK TO THE HOMEPAGE</a>
 
 </body>
 </html>
