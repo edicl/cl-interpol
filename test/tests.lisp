@@ -71,7 +71,8 @@ value iff all tests succeeded.  Errors in BODY are caught and reported
                                           :type nil :version nil
                                           :defaults *this-file*))                          
                           (external-format '(:latin-1 :eol-style :lf))
-                          verbose)
+                          verbose
+                          named-readtables)
   "Loops through all the forms in the file FILE-NAME and executes each
 of them using EVAL.  The CL-INTERPOL syntax is enabled when the forms
 are read.  It is assumed that each FORM specifies a test which returns
@@ -85,7 +86,10 @@ tests succeeded.
 but not counted as tests.  The global special variables exported by
 CL-INTERPOL \(and some from CL-UNICODE as well) are rebound during the
 tests so that they can be safely set in the test files."
-  (enable-interpol-syntax)
+  (if named-readtables
+      (named-readtables:in-readtable :interpol-syntax)
+      (enable-interpol-syntax))
+
   (unwind-protect
       (with-open-file (binary-stream file-name :element-type 'flex:octet)
         (let* ((stream (flex:make-flexi-stream binary-stream :external-format external-format))
@@ -108,7 +112,9 @@ tests so that they can be safely set in the test files."
               (cond (setqp (eval form) nil)
                     ((eval form) nil)
                     (t (list (format nil "~S returned NIL" form))))))))
-    (disable-interpol-syntax)))
+    (if named-readtables
+        (named-readtables:in-readtable :standard)
+        (disable-interpol-syntax))))
 
 (defun run-all-tests (&key verbose)
   "Runs all tests for CL-INTERPOL and returns a true value iff all
@@ -119,10 +125,17 @@ above."
                  `(unless (progn ,@body)
                     (setq successp nil))))
       ;; run the automatically generated Perl tests
-      (run-test-suite (simple-tests :file-name (make-pathname :name "perltests"
-                                                              :type nil :version nil
-                                                              :defaults *this-file*)
-                                    :verbose verbose))
-      (run-test-suite (simple-tests :verbose verbose)))
+      (loop for named-readtables in (list nil t)
+            do (format t "~2&Testing with activation through ~A~2%"
+                       (if named-readtables
+                           "named-readtables"
+                           "enable-interpol-syntax"))
+               (run-test-suite (simple-tests :file-name (make-pathname :name "perltests"
+                                                                       :type nil :version nil
+                                                                       :defaults *this-file*)
+                                             :verbose verbose
+                                             :named-readtables named-readtables))
+               (run-test-suite (simple-tests :verbose verbose
+                                             :named-readtables named-readtables))))
     (format t "~2&~:[Some tests failed~;All tests passed~]." successp)
     successp))

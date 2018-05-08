@@ -782,3 +782,7 @@ ENABLE-INTERPOL-SYNTAX. If there was no such call, the standard
 readtable is used."
   `(eval-when (:compile-toplevel :load-toplevel :execute)
     (%disable-interpol-syntax)))
+
+(defreadtable :interpol-syntax
+   (:merge :standard)
+   (:dispatch-macro-char #\# #\? #'interpol-reader))
