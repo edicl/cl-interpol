@@ -32,11 +32,13 @@
 (defpackage :cl-interpol
   (:nicknames :interpol)
   (:use :cl :cl-unicode :cl-ppcre)
+  (:import-from :named-readtables
+                :defreadtable)
   (:export :enable-interpol-syntax
            :disable-interpol-syntax
            :*list-delimiter*
            :*outer-delimiters*
            :*inner-delimiters*
-	   :*optional-delimiters-p*
+           :*optional-delimiters-p*
            :*interpolate-format-directives*
-	   :interpol-reader))
+           :interpol-reader))

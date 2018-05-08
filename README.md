@@ -9,6 +9,9 @@ into literal strings even if your editor/IDE doesn't support them.
 Here's an example:
 
 ~~~lisp
+(named-readtables:in-readtable :interpol-syntax)
+
+
 (let ((a 42))
     #?"foo: \xC4\N{Latin capital letter U with diaeresis}\nbar: ${a}")
 "foo: ÄÜ
