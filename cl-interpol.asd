@@ -35,7 +35,7 @@
 (in-package :cl-interpol-asd)
 
 (defsystem :cl-interpol
-  :version "0.2.7"
+  :version "0.2.6"
   :serial t
   :depends-on (:cl-unicode
                :named-readtables)
