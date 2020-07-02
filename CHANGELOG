@@ -1,5 +1,5 @@
 Version 0.2.7
-2018-05-08
+2020-07-02
 Added support for name-readtables.
 Now interpol syntax can be activated using: (named-readtables:in-readtable :interpol-syntax).
 This way integration with SLIME and SLY is possible.
