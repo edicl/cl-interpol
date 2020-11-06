@@ -36,6 +36,7 @@
 
 (defsystem :cl-interpol
   :version "0.2.7"
+  :license "BSD-2-Clause"
   :serial t
   :depends-on (:cl-unicode
                :named-readtables)
