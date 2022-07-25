@@ -27,32 +27,25 @@
 ;;; NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
 ;;; SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
-(in-package :cl-user)
-
-(defpackage :cl-interpol-asd
-  (:use :cl :asdf))
-
-(in-package :cl-interpol-asd)
-
-(defsystem :cl-interpol
+(defsystem "cl-interpol"
   :version "0.2.7"
   :license "BSD-2-Clause"
   :serial t
-  :depends-on (:cl-unicode
-               :named-readtables)
+  :depends-on ("cl-unicode"
+               "named-readtables")
   :components ((:file "packages")
                (:file "specials")
                (:file "util")
                (:file "alias")
-               (:file "read")))
+               (:file "read"))
+  :in-order-to ((test-op (test-op "cl-interpol/test"))))
 
-(defsystem :cl-interpol-test
-  :depends-on (:cl-interpol :flexi-streams)
+(defsystem "cl-interpol/test"
+  :depends-on ("cl-interpol"
+               "flexi-streams")
   :components ((:module "test"
                         :serial t
                         :components ((:file "packages")
-                                     (:file "tests")))))
-
-(defmethod perform ((o test-op) (c (eql (find-system :cl-interpol))))
-  (operate 'load-op :cl-interpol-test)
-  (funcall (intern (symbol-name :run-all-tests) (find-package :cl-interpol-test))))
+                                     (:file "tests"))))
+  :perform (test-op (o c)
+             (symbol-call :cl-interpol-test :run-all-tests)))
